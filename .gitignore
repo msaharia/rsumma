@@ -3,5 +3,9 @@
 .RData
 .Ruserdata
 
-#Raw data files
+# OS X .DS_Store files
+.DS_Store
+R/.DS_Store
+
+# Raw data files
 data_raw/
