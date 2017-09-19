@@ -11,5 +11,6 @@ LazyData: true
 Imports: 
     dplyr,
     ggplot2,
-    ncdf4
+    ncdf4,
+    lubridate
 RoxygenNote: 6.0.1
