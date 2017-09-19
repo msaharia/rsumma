@@ -14,7 +14,7 @@ nearestHRU(ncname, uLat, uLong)
 \item{uLong}{Longitude}
 }
 \value{
-HRU Index that is nearest to uLat and uLong
+HRU Index and its coordinates that is nearest to uLat and uLong
 }
 \description{
 This function finds the HRU Index that is closest to a given latitude and longitude
