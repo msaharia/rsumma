@@ -18,7 +18,7 @@ zDecs <- function(zDecFile, startDate, nMonths){
     readLines(zDecFile) %>%
       gsub(pattern = "starttime", replace = startTimes) %>% #Replaces the start time
       gsub(pattern = "endtime", replace = endTimes) %>% #Replaces the end time
-      write.table(.,paste0("data_raw/PNW2/zDecisionFiles/", zDecNames), #Writes out a decision file for every batch
+      write.table(., paste0("zDecisionFiles/", zDecNames), #Writes out a decision file for every batch
                   row.names=F, col.names=F, quote = F)
   }
   x <- mapply(multx, startTimes, endTimes, zDecNames)
