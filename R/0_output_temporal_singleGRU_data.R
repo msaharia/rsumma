@@ -4,12 +4,13 @@
 #' @export
 #'
 #' @examples
-function(ncname){
+temporalplot('data_raw/20150101_20161231_GRU9561_3L/PNW3L_2015-2016_H9561_1.nc', "figures/summaoutput_wateryear_H9561_3L.pdf")
+temporalplot <- function(ncname, outfile){
 
   ########################################################################
   # Opens the NetCDF file
   ########################################################################
-  ncname <- file.path(ncname,fsep = .Platform$file.sep) #Get full file path of the NetCDF file
+  # ncname <- file.path(ncname,fsep = .Platform$file.sep) #Get full file path of the NetCDF file
   summaout <- nc_open(ncname) #Open the SUMMA output NetCDF file
   ncvars <- names(summaout[['var']]) #Get all the variables in the netCDF file
 
@@ -28,8 +29,6 @@ function(ncname){
   LWRadAtm <- ncvar_get(summaout, 'LWRadAtm')
 
   #Others
-  fieldCapacity <- ncvar_get(summaout, 'fieldCapacity')
-  HRUarea <- ncvar_get(summaout, 'HRUarea')
   scalarSurfaceTemp <- ncvar_get(summaout, 'scalarSurfaceTemp') -272.15 #Convert to Centigrade
 
   #Canopy
@@ -110,12 +109,12 @@ function(ncname){
                                     lapply(seq(1,max(nSoil)), function(x) paste0('mLayerTemp_SoilLayer',x)))
 
   ########################################################################
-  # mLayerHeight - #Temperature in each layer
+  # mLayerHeight - #Height in each layer
   ########################################################################
-  mLayerHeight <- ncvar_get(summaout, 'mLayerHeight') #Soil Moisture
-  mLayerHeight_soil <- data.frame(sapply(soillayerindexlist, function(x) mLayerHeight[x])) #Make a list of data
-  mLayerHeight_soil <- setNames(mLayerHeight_soil,  #Set the names of different soil layers automatically
-                              lapply(seq(1,max(nSoil)), function(x) paste0('mLayerHeight_SoilLayer',x)))
+  # mLayerHeight <- ncvar_get(summaout, 'mLayerHeight') #Soil Moisture
+  # mLayerHeight_soil <- data.frame(sapply(soillayerindexlist, function(x) mLayerHeight[x])) #Make a list of data
+  # mLayerHeight_soil <- setNames(mLayerHeight_soil,  #Set the names of different soil layers automatically
+  #                             lapply(seq(1,max(nSoil)), function(x) paste0('mLayerHeight_SoilLayer',x)))
 
 
   ########################################################################
@@ -123,64 +122,62 @@ function(ncname){
   ########################################################################
   #sumdata_long <- melt(sumdata, id='stimevec')
   sumdata_all <- data.frame(stime, pptrate, airtemp, windspd, scalarRainfall, SWRadAtm, LWRadAtm, #forcings
-                            fieldCapacity, HRUarea, scalarSurfaceTemp, #others
+                            scalarSurfaceTemp, #others
                             scalarCanopyIce, scalarCanopyLiq, scalarSnowDepth, #Canopy
-                            scalarBelowCanopySolar, scalarWindspdCanopyBottom, scalarSenHeatGround, scalarSenHeatTotal,
+                            scalarBelowCanopySolar, scalarSenHeatGround, scalarSenHeatTotal,
                             scalarLatHeatGround, scalarLatHeatTotal, scalarSnowSublimation, scalarThroughfallSnow, scalarThroughfallRain,
                             scalarRainPlusMelt , scalarInfiltration, scalarExfiltration,  #Soil
                             scalarSWE, scalarSurfaceRunoff, scalarSoilDrainage,
-                            mLayerVolFracLiq_soil, mLayerVolFracWat_soil, mLayerVolFracIce_soil, #Soil layer variables
-                            mLayerTemp_soil, mLayerHeight_soil,
+                            mLayerVolFracLiq_soil, #Soil layer variables
+                            mLayerVolFracWat_soil,
+                            mLayerVolFracIce_soil,
+                            mLayerTemp_soil,
                             check.names=FALSE)
 
-  # sumdata_all_long <- melt(sumdata_all, id='stime')
+  sumdata_units_lookup <- data.frame(var_names=c("stime", "pptrate", "airtemp", "windspd", "scalarRainfall", "SWRadAtm", "LWRadAtm", #forcings
+                                                 "fieldCapacity", "HRUarea", "scalarSurfaceTemp", #others
+                                                 "scalarCanopyIce", "scalarCanopyLiq", "scalarSnowDepth", #Canopy
+                                                 "scalarBelowCanopySolar", "scalarWindspdCanopyBottom", "scalarSenHeatGround", "scalarSenHeatTotal",
+                                                 "scalarLatHeatGround", "scalarLatHeatTotal", "scalarSnowSublimation", "scalarThroughfallSnow", "scalarThroughfallRain",
+                                                 "scalarRainPlusMelt" , "scalarInfiltration", "scalarExfiltration",  #Soil
+                                                 "scalarSWE", "scalarSurfaceRunoff", "scalarSoilDrainage",
+                                                 "mLayerTemp_SoilLayer1", "mLayerTemp_SoilLayer2", "mLayerTemp_SoilLayer3", "mLayerTemp_SoilLayer4", "mLayerTemp_SoilLayer5","mLayerTemp_SoilLayer6","mLayerTemp_SoilLayer7","mLayerTemp_SoilLayer8",
+                                                 "mLayerHeight_SoilLayer1","mLayerHeight_SoilLayer2", "mLayerHeight_SoilLayer3", "mLayerHeight_SoilLayer4", "mLayerHeight_SoilLayer5", "mLayerHeight_SoilLayer6", "mLayerHeight_SoilLayer7", "mLayerHeight_SoilLayer8"),
+                                         y_lab=c("h", "mm h-1", "°C", "m s-1", "mm h-1", "W m-2", "W m-2", #forcings
+                                                 " ", " ", "°C", #others
+                                                 "mm", "mm", "mm", #canopy
+                                                 "W m-2", "m s-1",  "W m-2",  "W m-2",
+                                                 "W m-2",  "W m-2", "mm h-1", "mm h-1", "mm h-1",
+                                                 "mm s-1", "mm s-1", "mm s-1", #Soil
+                                                 "kg m-2", "mm h-1", "mm h-1",
+                                                 "°C", "°C", "°C", "°C", "°C", "°C", "°C", "°C",
+                                                 "m", "m", "m", "m", "m", "m", "m", "m" ))
 
   ########################################################################
   # Individual plots
   ########################################################################
-  var_list = names(sumdata_all)
-  units_list = c("Time", "mm h-1",  "mm h-1", "W m-2", "°C",
-                 "mm", "mm", "mm",
-                 "W m-2", "mm h-1", "W m-2", "W m-2",
-                 "W m-2", "mm hr-1", "mm h-1", "mm h-1",
-                 "mm h-1", "mm h-1", "kg m-2", "mm h-1",
-                 "mm h-1",
-                 " "," "," "," "," "," "," "," ",
-                 " "," "," "," "," "," "," "," ",
-                 "°C","°C","°C","°C","°C","°C","°C","°C")
-
-
-  # sumdata_all <- sumdata_all[2:nrow(sumdata_all),]
-  # Make plots.
   plot_list = list()
-  for (i in 2:length(var_list)) {
-    p = ggplot(sumdata_all, aes_string(x = stime, y = var_list[i])) +
-      #ylim(-9999, 10000) +
-      #scale_y_continuous(limits = c(-999, NA))+
-      # coord_cartesian(ylim = c(325, 500))+
+  for (yvar in names(sumdata_all)[-1]) {
+    p = ggplot(sumdata_all, aes_string(x = stime, y = yvar)) +
       geom_line()+
       scale_x_datetime(date_labels = "%b %y")+
-      ylab(units_list[i])+
-      ggtitle(paste(var_list[i]))+
+      # ylab(units_list[i])+
+      ylab(sumdata_units_lookup$y_lab[match(yvar, sumdata_units_lookup$var_names)])+ #Matching units with variable using a loopup table
+      ggtitle(yvar)+
       theme_bw()+
       theme(plot.title = element_text(hjust = 0.5),
             axis.title.x=element_blank())
-    plot_list[[i]] = p
+    plot_list[[yvar]] = p
   }
 
   # create pdf where each page is a separate plot. ,
-  pdf("figures/summaoutput_wateryear_H9561_v3.pdf",  width=7, height=1.5)
-  for (i in 2:length(var_list)) {
-    print(plot_list[[i]])
+  pdf(outfile,  width=7, height=1.5)
+  for (yvar in names(sumdata_all)[-1]) {
+    print(plot_list[yvar])
   }
   dev.off()
-
-
-
-
-
-
 }
+
 
 # # #ALTERNATIVE
 # layerindex1 <- midTotoStartIndex+nSnow #Soil layer nearest to atmoshphere
