@@ -3,7 +3,7 @@
 #' @param zDecFile zDecisions template file
 #'
 #' @examples
-#' zDecNames <- zDecs('data_raw/PNW2/summa_zDecisions_template.txt')
+#'
 zDecs <- function(zDecFile){
   runStart <- lubridate::ymd_hm(startDate) #Start date of the entire simulation
   startTimes <<- runStart + months(0:(nMonths-1)) #The start time of every simulation batch
