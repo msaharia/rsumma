@@ -133,6 +133,7 @@ temporalplot <- function(ncname, outfile){
                             mLayerVolFracIce_soil,
                             mLayerTemp_soil,
                             check.names=FALSE)
+  return(sumdata_all)
 
   sumdata_units_lookup <- data.frame(var_names=c("stime", "pptrate", "airtemp", "windspd", "scalarRainfall", "SWRadAtm", "LWRadAtm", #forcings
                                                  "fieldCapacity", "HRUarea", "scalarSurfaceTemp", #others
@@ -165,6 +166,8 @@ temporalplot <- function(ncname, outfile){
       ylab(sumdata_units_lookup$y_lab[match(yvar, sumdata_units_lookup$var_names)])+ #Matching units with variable using a loopup table
       ggtitle(yvar)+
       theme_bw()+
+
+
       theme(plot.title = element_text(hjust = 0.5),
             axis.title.x=element_blank())
     plot_list[[yvar]] = p
