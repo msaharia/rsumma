@@ -45,13 +45,31 @@ multiline <- function(summavar){
         theme_bw()+
         theme(plot.title = element_text(hjust = 0.5),
             axis.title.x=element_blank()) %>%
-      return()
+    return()
 
   }
 }
 
-L3 <- temporalplot('data_raw/20150101_20161231_GRU9561_3L/PNW3L_2015-2016_H9561_1.nc', "figures/summaoutput_wateryear_H9561_3L.pdf")
+L3_H1 <- temporalplot('data_raw/benchmarking/PNW_3L_1H.nc', "figures/summaoutput_3L_1H.pdf")
 L8 <- temporalplot('data_raw/20150101_20161231_GRU9561/PNW_2015-2016_H9561_1.nc')
+
+
+annualRunoff_L3 <- sum(L3['scalarSurfaceRunoff']) + sum(L3['scalarSoilDrainage'])
+annualRunoff_L8 <- sum(L8['scalarSurfaceRunoff']) + sum(L8['scalarSoilDrainage'])
+
+runoffRatio_L3 <- annualRunoff_L3/sum(L3['pptrate'])
+runoffRatio_L8 <- annualRunoff_L8/sum(L8['pptrate'])
+
+maxSWE_L3 <- max(L3['scalarSWE'])
+maxSWE_L8<- max(L8['scalarSWE'])
+
+annualRunoff <- c(annualRunoff_L3, annualRunoff_L8)
+maxSWE <- c(maxSWE_L3, maxSWE_L8)
+runoffRatio <- c(runoffRatio_L3, runoffRatio_L8)
+
+calcvars <- data.frame(rbind(annualRunoff, maxSWE, runoffRatio)) %>%
+  setNames(c("3 Layer", "8 Layer"))
+
 
 nams <- colnames(L8)[-1]
 
@@ -59,6 +77,7 @@ x <- lapply(nams, multiline)
 
 # create pdf where each page is a separate plot. ,
 pdf('figures/out.pdf',  width=7, height=1.5)
+grid.table(calcvars)
 for (i in seq(1,length(L8))) {
   print(x[i])
 }
