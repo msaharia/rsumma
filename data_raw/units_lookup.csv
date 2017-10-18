@@ -1,0 +1,45 @@
+var_names,y_lab
+stime,h
+pptrate,mm h-1
+airtemp,å¡C
+windspd,m s-1
+scalarRainfall,mm h-1
+SWRadAtm,W m-2
+LWRadAtm,W m-2
+fieldCapacity, 
+HRUarea, 
+scalarSurfaceTemp,å¡C
+scalarCanopyIce,mm
+scalarCanopyLiq,mm
+scalarSnowDepth,mm
+scalarBelowCanopySolar,W m-2
+scalarWindspdCanopyBottom,m s-1
+scalarSenHeatGround,W m-2
+scalarSenHeatTotal,W m-2
+scalarLatHeatGround,W m-2
+scalarLatHeatTotal,W m-2
+scalarSnowSublimation,mm h-1
+scalarThroughfallSnow,mm h-1
+scalarThroughfallRain,mm h-1
+scalarRainPlusMelt,mm s-1
+scalarInfiltration,mm s-1
+scalarExfiltration,mm s-1
+scalarSWE,kg m-2
+scalarSurfaceRunoff,mm h-1
+scalarSoilDrainage,mm h-1
+mLayerTemp_SoilLayer1,¡C
+mLayerTemp_SoilLayer2,¡C
+mLayerTemp_SoilLayer3,¡C
+mLayerTemp_SoilLayer4,¡C
+mLayerTemp_SoilLayer5,¡C
+mLayerTemp_SoilLayer6,¡C
+mLayerTemp_SoilLayer7,¡C
+mLayerTemp_SoilLayer8,¡C
+mLayerHeight_SoilLayer1,m
+mLayerHeight_SoilLayer2,m
+mLayerHeight_SoilLayer3,m
+mLayerHeight_SoilLayer4,m
+mLayerHeight_SoilLayer5,m
+mLayerHeight_SoilLayer6,m
+mLayerHeight_SoilLayer7,m
+mLayerHeight_SoilLayer8,m
