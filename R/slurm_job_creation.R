@@ -39,6 +39,8 @@ for(i in seq(from = 1, to = length(summaruncommands), by = lenJob)){
   cat("#PBS -q regular", file=pbsFile, append=TRUE, sep = "\n")
   cat("#PBS -l walltime=02:00:00", file=pbsFile, append=TRUE, sep = "\n")
   cat("#PBS -l select=1:ncpus=36:mpiprocs=36", file=pbsFile, append=TRUE, sep = "\n")
+  cat("#PBS -o ./log/summa3L3H.out", file=pbsFile, append=TRUE, sep = "\n")
+  cat("#PBS -e ./log/summa3L3H.err", file=pbsFile, append=TRUE, sep = "\n")
   cat("mkdir -p /glade/scratch/manab/temp", file=pbsFile, append=TRUE, sep = "\n")
   cat("export TMPDIR=/glade/scratch/manab/temp", file=pbsFile, append=TRUE, sep = "\n")
   cat("export MPI_SHEPHERD=true", file=pbsFile, append=TRUE, sep = "\n")

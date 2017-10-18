@@ -133,7 +133,7 @@ temporalplot <- function(ncname, hruIndex, outfile){
                             mLayerVolFracIce_soil,
                             mLayerTemp_soil,
                             check.names=FALSE)
-  # return(sumdata_all)
+   return(sumdata_all)
 
   sumdata_units_lookup <- data.frame(var_names=c("stime", "pptrate", "airtemp", "windspd", "scalarRainfall", "SWRadAtm", "LWRadAtm", #forcings
                                                  "fieldCapacity", "HRUarea", "scalarSurfaceTemp", #others
@@ -154,35 +154,34 @@ temporalplot <- function(ncname, hruIndex, outfile){
                                                  "°C", "°C", "°C", "°C", "°C", "°C", "°C", "°C",
                                                  "m", "m", "m", "m", "m", "m", "m", "m" ))
 
-  #######################################################################
-  #Individual plots
-  #######################################################################
-  plot_list = list()
-  for (yvar in names(sumdata_all)[-1]) {
-    p = ggplot(sumdata_all, aes_string(x = stime, y = yvar)) +
-      geom_line()+
-      scale_x_datetime(date_labels = "%b %y")+
-      # ylab(units_list[i])+
-      ylab(sumdata_units_lookup$y_lab[match(yvar, sumdata_units_lookup$var_names)])+ #Matching units with variable using a loopup table
-      ggtitle(yvar)+
-      theme_bw()+
-
-
-      theme(plot.title = element_text(hjust = 0.5),
-            axis.title.x=element_blank())
-    plot_list[[yvar]] = p
-  }
-
-  # create pdf where each page is a separate plot. ,
-  pdf(outfile,  width=7, height=1.5)
-  for (yvar in names(sumdata_all)[-1]) {
-    print(plot_list[yvar])
-  }
-  dev.off()
+  # #######################################################################
+  # #Individual plots
+  # #######################################################################
+  # plot_list = list()
+  # for (yvar in names(sumdata_all)[-1]) {
+  #   p = ggplot(sumdata_all, aes_string(x = stime, y = yvar)) +
+  #     geom_line()+
+  #     scale_x_datetime(date_labels = "%b %y")+
+  #     # ylab(units_list[i])+
+  #     ylab(sumdata_units_lookup$y_lab[match(yvar, sumdata_units_lookup$var_names)])+ #Matching units with variable using a loopup table
+  #     ggtitle(yvar)+
+  #     theme_bw()+
+  #
+  #
+  #     theme(plot.title = element_text(hjust = 0.5),
+  #           axis.title.x=element_blank())
+  #   plot_list[[yvar]] = p
+  # }
+  #
+  # # create pdf where each page is a separate plot. ,
+  # pdf(outfile,  width=7, height=1.5)
+  # for (yvar in names(sumdata_all)[-1]) {
+  #   print(plot_list[yvar])
+  # }
+  # dev.off()
 }
 
 # temporalplot('data_raw/benchmarking/PNW_3L_3H.nc', 1, 'figures/summaoutput_3l_3H.pdf')
 # temporalplot('data_raw/benchmarking/PNW_8L_1H.nc', 1, 'figures/summaoutput_8l_1H.pdf')
-temporalplot('data_raw/cheyennecopy/PNW3L3H_2015-01-01-00_spinup_G09601-09650_1.nc',
-             1, 'figures/summaoutput_3L3H.pdf')
+temporalplot('data_raw/benchmarking/PNW_3L_1H.nc', 1, 'figures/summaoutput_3L3H.pdf')
 
