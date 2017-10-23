@@ -1,0 +1,25 @@
+---
+title: "Plotting SUMMA Inputs and Outputs"
+author: "Manabendra Saharia"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+To plot inputs, outputs, and internal data flow
+
+## SUMMA Input
+
+Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+
+## SUMMA Output
+
+There are several steps to getting a PDF containing plots of all SUMMA output variables
+
+* Extracting the data from netCDF into a dataframe that is suitable for plotting: `sumdata_all <- temporaloutputdata('vault/benchmarking/PNW_3L_1H.nc', 1)`
+* Converting the data 
+* Plotting the data
+

@@ -1,0 +1,17 @@
+---
+title: "Analyzing SUMMA inputs and Outputs"
+output:
+  html_document:
+    df_print: paged
+  html_notebook: default
+  pdf_document: default
+---
+
+Summa output file is imported
+
+```{r}
+library(rsumma)
+sumdata_all <- rsumma::temporaloutputdata('../vault/benchmarking/PNW_3L_1H.nc', 1)
+plot(sumdata_all$pptrate)
+```
+
