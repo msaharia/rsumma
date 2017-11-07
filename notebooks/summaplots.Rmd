@@ -1,0 +1,39 @@
+---
+title: "SHARP setup for Pacific Northwest"
+output:
+  html_document:
+    df_print: paged
+---
+
+This is a preliminary visualization of the SHARP setup for PNW.
+
+MetSim -> SUMMA -> MizuRoute
+
+## Temporal plots
+
+```{r loadinglibraries}
+library(rgdal)
+library(ggplot2)
+library(dplyr)
+library(ncdf4)
+library(RColorBrewer)
+library(data.table)
+```
+
+```{r}
+pnw <-readOGR(dsn ="/glade/p/work/manab/SHARP/shapefiles/naokifiles/", layer = 'Region_17_merged_hru')
+
+```
+
+### Inputs
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
