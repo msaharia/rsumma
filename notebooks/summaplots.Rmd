@@ -22,18 +22,36 @@ library(data.table)
 
 ```{r}
 pnw <-readOGR(dsn ="/glade/p/work/manab/SHARP/shapefiles/naokifiles/", layer = 'Region_17_merged_hru')
-
 ```
 
 ### Inputs
 
 ```{r}
-plot(cars)
+ncdat <- nc_open('/glade/p/work/manab/SHARP/PNW_3L/output/20100601_20161231_fulldomain_NOV6_concat/ncfinal.nc')
+timeStep <- 365*8
+pptrate <- ncdf4::ncvar_get(ncdat, 'pptrate')[,timeStep]*3600 #For one time step and all HRUs. mm/hr
+airtemp <- ncdf4::ncvar_get(ncdat, 'airtemp')[,timeStep] #Kelvin
+scalarSWE <- ncdf4::ncvar_get(ncdat, 'scalarSWE')[,timeStep] #kg m-2
+scalarSoilDrainage <- ncdf4::ncvar_get(ncdat, 'scalarSoilDrainage')[,timeStep] #m s-1
+hru_id2 <- ncdf4::ncvar_get(ncdat, 'hruId') #For one time step and all HRUs
+
+ncdf <- data.frame(hru_id2, pptrate, airtemp, scalarSWE, scalarSoilDrainage)
+
+pnwmer <- merge(pnw, ncdf, by='hru_id2') #Merging into shapefile
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+```{r}
+my.palette <- brewer.pal(n = 11, name = "Spectral")
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+pnwmer1 = subset(pnwmer, pptrate != 9999) # remove the basins with no PPT values
+pnwmer2 = subset(pnwmer, scalarSoilDrainage != -9999) # remove the basins with no SoilDrainage values
+pnwmer3 = subset(pnwmer, airtemp != -9999)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+```
+```{r}
+png("pptrate.png")
+spplot(pnwmer1, col.regions = my.palette, "pptrate", cuts = 10, main = "pptrate")
+dev.off()
+```
+
 
